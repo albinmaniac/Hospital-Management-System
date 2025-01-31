@@ -1,0 +1,11 @@
+<h2>Your Appointments</h2>
+<ul>
+    {% for appointment in appointments %}
+        <li>
+            With Dr. {{ appointment.doctor.user.first_name }} on {{ appointment.date }} at {{ appointment.time }}
+            (Status: {{ appointment.status }})
+        </li>
+    {% empty %}
+        <p>You have no appointments.</p>
+    {% endfor %}
+</ul>

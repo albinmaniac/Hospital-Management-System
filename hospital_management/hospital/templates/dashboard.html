@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: Arial, sans-serif;
+    }
+
+    .sidebar {
+      height: 100vh;
+      width: 250px;
+      background: #343a40;
+      color: white;
+      position: fixed;
+      top: 0;
+      left: 0;
+      padding-top: 20px;
+    }
+
+    .sidebar a {
+      color: white;
+      display: block;
+      padding: 15px 20px;
+      text-decoration: none;
+    }
+
+    .sidebar a:hover {
+      background: #495057;
+    }
+
+    .sidebar .sidebar-header {
+      font-size: 1.5em;
+      text-align: center;
+      margin-bottom: 1em;
+      font-weight: bold;
+    }
+
+    .content {
+      margin-left: 250px;
+      padding: 20px;
+    }
+
+    .card {
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 10px;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .status-label {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .status-pending { background-color: orange; color: white; }
+    .status-approved { background-color: green; color: white; }
+    .status-canceled { background-color: red; color: white; }
+
+    footer {
+      background-color: #343a40;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 20px;
+    }
+
+    footer a {
+      color: #ffc107;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-header">Dashboard</div>
+    <a href="{% url 'dashboard' %}"><i class="fas fa-home"></i> Home</a>
+    <a href="{% url 'doctor_list' %}"><i class="fas fa-user-md"></i> Doctors</a>
+    <a href="{% url 'patient_list' %}"><i class="fas fa-users"></i> Patients</a>
+
+    {% if user.role == 'patient' %}
+      <a href="{% url 'appointment_book' %}"><i class="fas fa-calendar-check"></i> Book Appointment</a>
+    {% elif user.role == 'doctor' %}
+      <a href="{% url 'doctor_appointment_list' %}"><i class="fas fa-calendar-alt"></i> My Appointments</a>
+    {% endif %}
+
+    <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="container">
+      <h1>Welcome, {{ user.first_name }}!</h1>
+      <p class="text-muted">Here’s what’s happening today.</p>
+
+      <!-- Stats Cards -->
+      {% if user.role == 'admin' %}
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-user-md fa-2x text-primary"></i></h5>
+              <p class="card-text">Total Doctors</p>
+              <h3>{{ doctors.count }}</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-users fa-2x text-success"></i></h5>
+              <p class="card-text">Total Patients</p>
+              <h3>{{ patients.count }}</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title"><i class="fas fa-calendar-check fa-2x text-info"></i></h5>
+              <p class="card-text">Appointments Today</p>
+              <h3>{{ appointments.count }}</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Appointments Section -->
+      <h1>Appointments</h1>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            {% if user.role == 'doctor' or user.role == 'admin' %}
+              <th>Patient Name</th>
+            {% elif user.role == 'patient' %}
+              <th>Doctor Name</th>
+            {% endif %}
+            <th>Date</th>
+            <th>Time</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appointment in appointments %}
+          <tr>
+            {% if user.role == 'doctor' or user.role == 'admin' %}
+              <td>{{ appointment.patient.user.first_name }} {{ appointment.patient.user.last_name }}</td>
+            {% elif user.role == 'patient' %}
+              <td>Dr. {{ appointment.doctor.full_name }}</td>
+            {% endif %}
+            <td>{{ appointment.date }}</td>
+            <td>{{ appointment.time }}</td>
+            <td>{{ appointment.reason }}</td>
+            <td>
+              <span class="status-label status-{{ appointment.status }}">{{ appointment.get_status_display }}</span>
+            </td>
+            <td>
+              {% if user.role == 'doctor' or user.role == 'admin' %}
+                {% if appointment.status == 'pending' %}
+                  <form method="post" action="{% url 'appointment_status_update' appointment.id %}">
+                    {% csrf_token %}
+                    <button type="submit" name="status" value="approved" class="btn btn-success btn-sm">Approve</button>
+                    <button type="submit" name="status" value="canceled" class="btn btn-danger btn-sm">Cancel</button>
+                  </form>
+                {% else %}
+                  <span>No actions available</span>
+                {% endif %}
+              {% elif user.role == 'patient' %}
+                {% if appointment.status == 'pending' %}
+                  <a href="{% url 'appointment_update' appointment.id %}" class="btn btn-warning btn-sm">Edit</a>
+                  <a href="{% url 'appointment_cancel' appointment.id %}" class="btn btn-danger btn-sm">Cancel</a>
+                {% elif appointment.status == 'approved' %}
+                  <span>No changes allowed</span>
+                {% endif %}
+              {% endif %}
+            </td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="6" class="text-center">No appointments found.</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; 2025 Hospital Management. All rights reserved.</p>
+    <a href="https://www.facebook.com/albin.mania.52/"><i class="fab fa-facebook-f"></i></a>
+    <a href="#"><i class="fab fa-twitter"></i></a>
+    <a href="https://www.instagram.com/albinmaniac/"><i class="fab fa-instagram"></i></a>
+    <a href="#"><i class="fab fa-message" aria-hidden="true"></i></a>
+  </footer>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

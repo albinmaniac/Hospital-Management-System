@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cancel Appointment</title>
+</head>
+<body>
+    <h1>Cancel Appointment</h1>
+    <p>Are you sure you want to cancel your appointment with {{ appointment.doctor.full_name }} on {{ appointment.date }} at {{ appointment.time }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Yes, Cancel Appointment</button>
+    </form>
+    <a href="{% url 'appointment_list' %}">No, Go Back</a>
+</body>
+</html>
+

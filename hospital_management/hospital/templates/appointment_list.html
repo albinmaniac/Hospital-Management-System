@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments</title>
+</head>
+<body>
+    <h1>My Appointments</h1>
+    <table border="2">
+        <thead>
+            <tr>
+                <th>Doctor</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Reason</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td>Dr.{{ appointment.doctor.full_name }}</td>
+                <td>{{ appointment.date }}</td>
+                <td>{{ appointment.time }}</td>
+                <td>{{ appointment.reason }}</td>
+                <td>
+                    <span class="status-label status-{{ appointment.status }}">{{ appointment.get_status_display }}</span>
+                </td>
+                <td>
+                    {% if appointment.status == 'pending' %}
+                    <!-- Show Edit and Cancel options for pending appointments -->
+                    <a href="{% url 'appointment_update' appointment.id %}">Edit</a> |
+                    <a href="{% url 'appointment_cancel' appointment.id %}">Cancel</a>
+                    {% else %}
+                    <!-- Hide Edit option for approved appointments -->
+                    {% if appointment.status == 'approved' %}
+                    <span>No changes allowed</span>
+                    {% else %}
+                    <a href="{% url 'appointment_cancel' appointment.id %}">Cancel</a>
+                    {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No appointments found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <br>
+    <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+</body>
+</html>

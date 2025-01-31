@@ -1,0 +1,10 @@
+<h1>Patient Details</h1>
+<p>Username: {{ patient.user.username }}</p>
+<p>Email: {{ patient.user.email }}</p>
+<p>Contact Number: {{ patient.contact_number }}</p>
+<p>Date of Birth: {{ patient.date_of_birth }}</p>
+<p>Gender: {{ patient.gender }}</p>
+<p>Address: {{ patient.address }}</p>
+<a href="{% url 'patient_update' patient.pk %}">Edit</a>
+<a href="{% url 'patient_delete' patient.pk %}">Delete</a>
+

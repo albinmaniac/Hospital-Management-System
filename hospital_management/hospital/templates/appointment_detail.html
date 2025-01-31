@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Details</title>
+</head>
+<body>
+    <h1>Appointment Details</h1>
+
+    <table>
+        <tr>
+            <th>Doctor:</th>
+            <td>{{ appointment.doctor.full_name }}</td>
+        </tr>
+        <tr>
+            <th>Department:</th>
+            <td>{{ appointment.doctor.department.name }}</td>
+        </tr>
+        <tr>
+            <th>Specialization:</th>
+            <td>{{ appointment.doctor.specialization }}</td>
+        </tr>
+        <tr>
+            <th>Date:</th>
+            <td>{{ appointment.date }}</td>
+        </tr>
+        <tr>
+            <th>Time:</th>
+            <td>{{ appointment.time }}</td>
+        </tr>
+        <tr>
+            <th>Patient:</th>
+            <td>{{ appointment.patient.username }}</td>
+        </tr>
+        <tr>
+            <th>Status:</th>
+            <td>{{ appointment.status }}</td>
+        </tr>
+        <tr>
+            <th>Reason:</th>
+            <td>{{ appointment.reason }}</td>
+        </tr>
+    </table>
+
+    <a href="{% url 'appointment_list' %}">Back to Appointment List</a>
+    <br><br>
+
+    {% if appointment.status != "canceled" %}
+        <a href="{% url 'appointment_update' appointment.pk %}">Update Appointment</a>
+        <br>
+        <a href="{% url 'appointment_cancel'  appointment.pk %}">Cancel Appointment</a>
+    {% endif %}
+</body>
+</html>
