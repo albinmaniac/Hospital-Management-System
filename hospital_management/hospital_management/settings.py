@@ -129,5 +129,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
 
 # settings.py
-LOGIN_REDIRECT_URL = '/hospital/dashboard/'  # Redirect to the dashboard
+LOGIN_REDIRECT_URL = '/hospital/index/'  # Redirect to the dashboard
 LOGOUT_REDIRECT_URL = '/accounts/login/'  # Redirect to the login page after logout

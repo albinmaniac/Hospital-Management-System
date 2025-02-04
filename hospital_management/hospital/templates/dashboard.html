@@ -93,7 +93,7 @@
   <!-- Sidebar -->
   <div class="sidebar">
     <div class="sidebar-header">Dashboard</div>
-    <a href="{% url 'dashboard' %}"><i class="fas fa-home"></i> Home</a>
+    <a href="{% url 'index' %}"><i class="fas fa-home"></i> Home</a>
     <a href="{% url 'doctor_list' %}"><i class="fas fa-user-md"></i> Doctors</a>
     <a href="{% url 'patient_list' %}"><i class="fas fa-users"></i> Patients</a>
 
@@ -109,7 +109,7 @@
   <!-- Content -->
   <div class="content">
     <div class="container">
-      <h1>Welcome, {{ user.first_name }}!</h1>
+      <h1 style="color: darkslateblue;">Welcome, {{ user.first_name }}!</h1>
       <p class="text-muted">Here’s what’s happening today.</p>
 
       <!-- Stats Cards -->
@@ -149,7 +149,7 @@
 
       <!-- Appointments Section -->
       <h1>Appointments</h1>
-      <table class="table table-bordered">
+      <table class="table table-bordered" style="color: rgb(31, 22, 112);">
         <thead>
           <tr>
             {% if user.role == 'doctor' or user.role == 'admin' %}
@@ -157,6 +157,7 @@
             {% elif user.role == 'patient' %}
               <th>Doctor Name</th>
             {% endif %}
+            <th>Department</th>
             <th>Date</th>
             <th>Time</th>
             <th>Reason</th>
@@ -172,6 +173,7 @@
             {% elif user.role == 'patient' %}
               <td>Dr. {{ appointment.doctor.full_name }}</td>
             {% endif %}
+            <td>{{appointment.department}}</td>
             <td>{{ appointment.date }}</td>
             <td>{{ appointment.time }}</td>
             <td>{{ appointment.reason }}</td>

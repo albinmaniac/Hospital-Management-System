@@ -66,12 +66,22 @@ class PatientRegistrationForm(UserCreationForm):
     
 
 class AppointmentBookingForm(forms.ModelForm):
+    
+
+    department = forms.ModelChoiceField(
+        queryset=Department.objects.all(),
+        required=True,
+        label="Select Department",
+        widget=forms.Select(attrs={'class': 'form-control'}),
+    )
+
     doctor = forms.ModelChoiceField(
         queryset=Doctor.objects.all(),
         required=True,
         label="Select Doctor",
         widget=forms.Select(attrs={'class': 'form-control'}),
     )
+
     date = forms.DateField(
         widget=forms.DateInput(attrs={
             'type': 'date',
@@ -100,7 +110,18 @@ class AppointmentBookingForm(forms.ModelForm):
 
     class Meta:
         model = Appointment
-        fields = ['doctor', 'date', 'time', 'reason']
+        fields = ['department','doctor', 'date', 'time', 'reason']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if 'department' in self.data:
+            try:
+                department_id = int(self.data.get('department'))
+                self.fields['doctor'].queryset = Doctor.objects.filter(department_id=department_id)
+            except (ValueError, TypeError):
+                self.fields['doctor'].queryset = Doctor.objects.all()
+        else:
+            self.fields['doctor'].queryset = Doctor.objects.all()
 
 
 class AppointmentUpdateForm(forms.ModelForm):

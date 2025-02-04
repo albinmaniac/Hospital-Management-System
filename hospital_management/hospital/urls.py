@@ -3,7 +3,7 @@ from .views import (
     DoctorRegistrationView,DoctorListView,DoctorDetailView,DoctorUpdateView,DoctorDeleteView,
     PatientRegistrationView,PatientListView,PatientDetailView,PatientUpdateView,PatientDeleteView,
     AppointmentCreateView,AppointmentListView,AppointmentDetailView,AppointmentUpdateView,AppointmentDeleteView,AppointmentStatusUpdateView,
-    DashboardView,DoctorAppointmentListView,PatientAppointmentListView
+    DashboardView,DoctorAppointmentListView,PatientAppointmentListView,IndexView,GetDoctorsByDepartmentView
 
     )
 
@@ -27,8 +27,12 @@ urlpatterns = [
     path('appointments/update/<int:pk>/', AppointmentUpdateView.as_view(), name='appointment_update'),
     path('appointments/cancel/<int:pk>/', AppointmentDeleteView.as_view(), name='appointment_cancel'),
     path('appointments/status/<int:pk>/', AppointmentStatusUpdateView.as_view(), name='appointment_status_update'),
+    path('get-doctors-by-department/', GetDoctorsByDepartmentView.as_view(), name='get_doctors_by_department'),
+
 
     path('dashboard/', DashboardView.as_view(), name='dashboard'),
+    path('index/', IndexView.as_view(), name='index'),
+
 
     path('doctor/appointments/', DoctorAppointmentListView.as_view(), name='doctor_appointment_list'),
     path('patient/appointments/', PatientAppointmentListView.as_view(), name='patient_appointment_list'),

@@ -11,6 +11,7 @@
         <thead>
             <tr>
                 <th>Doctor</th>
+                <th>Department</th>
                 <th>Date</th>
                 <th>Time</th>
                 <th>Reason</th>
@@ -22,6 +23,7 @@
             {% for appointment in appointments %}
             <tr>
                 <td>Dr.{{ appointment.doctor.full_name }}</td>
+                <td>{{appointment.department}}</td>
                 <td>{{ appointment.date }}</td>
                 <td>{{ appointment.time }}</td>
                 <td>{{ appointment.reason }}</td>

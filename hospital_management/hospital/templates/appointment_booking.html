@@ -13,5 +13,30 @@
         <button type="submit">Book Appointment</button>
     </form>
     <a href="{% url 'appointment_list' %}">Back to Dashboard</a>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#id_department').change(function () {
+            var departmentId = $(this).val();
+            if (departmentId) {
+                $.ajax({
+                    url: "{% url 'get_doctors_by_department' %}",  // Define this URL in Django
+                    data: {'department_id': departmentId},
+                    success: function (data) {
+                        var doctorSelect = $('#id_doctor');
+                        doctorSelect.empty();
+                        doctorSelect.append('<option value="">Select Doctor</option>');
+                        $.each(data.doctors, function (key, value) {
+                            doctorSelect.append('<option value="' + value.id + '">' + value.name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#id_doctor').empty().append('<option value="">Select Department First</option>');
+            }
+        });
+    });
+</script>
 </body>
 </html>

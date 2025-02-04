@@ -22,9 +22,10 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h1>Doctor Appointments</h1>
+        <h1 class="text-center">Doctor Appointments</h1>
+
         <table class="table table-bordered">
-            <thead>
+            <thead class="table-dark">
                 <tr>
                     <th>Patient Name</th>
                     <th>Date</th>
@@ -37,11 +38,7 @@
             <tbody>
                 {% for appointment in appointments %}
                 <tr>
-                    {% if user.role == 'doctor' or user.role == 'admin' %}
-                        <td>{{ appointment.patient.user.first_name }} {{ appointment.patient.user.last_name }}</td>
-                    {% elif user.role == 'patient' %}
-                        <td>Dr. {{ appointment.doctor.full_name }}</td>
-                    {% endif %}
+                    <td>{{ appointment.patient.user.first_name }} {{ appointment.patient.user.last_name }}</td>
                     <td>{{ appointment.date }}</td>
                     <td>{{ appointment.time }}</td>
                     <td>{{ appointment.reason }}</td>
@@ -51,11 +48,15 @@
                     <td>
                         {% if user.role == 'doctor' or user.role == 'admin' %}
                             {% if appointment.status == 'pending' %}
-                                <form method="post" action="{% url 'appointment_status_update' appointment.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit" name="status" value="approved" class="btn btn-success btn-sm">Approve</button>
-                                    <button type="submit" name="status" value="canceled" class="btn btn-danger btn-sm">Cancel</button>
-                                </form>
+                            <form method="post" action="{% url 'appointment_status_update' appointment.id %}">
+                                {% csrf_token %}
+                                <button type="submit" name="status" value="approved" class="btn btn-success btn-sm">
+                                    Approve
+                                </button>
+                                <button type="submit" name="status" value="canceled" class="btn btn-danger btn-sm">
+                                    Cancel
+                                </button>
+                            </form>
                             {% else %}
                                 <span>No actions available</span>
                             {% endif %}
@@ -72,6 +73,13 @@
 
         <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
     </div>
+
+    <!-- JavaScript to set status dynamically before submitting the form -->
+    <script>
+        function setStatus(appointmentId, status) {
+            document.getElementById("status-" + appointmentId).value = status;
+        }
+    </script>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

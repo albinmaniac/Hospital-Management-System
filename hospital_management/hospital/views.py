@@ -11,7 +11,20 @@ from django.http import HttpResponseForbidden
 from accounts.models import User  # Assuming your custom User model is in accounts.models
 from django.core.exceptions import PermissionDenied
 from django.utils.translation import gettext_lazy as _
+from django.http import JsonResponse
+from .models import Doctor
 
+
+
+class IndexView(View):
+
+    template_name='index.html'
+
+    def get(self,request,*args,**kwargs):
+
+        qs=Doctor,Patient,Appointment,Department.objects.all()
+
+        return render(request,self.template_name,{'doctor':qs})
 
 #===========Doctor =============
 
@@ -158,7 +171,13 @@ class AppointmentCreateView(CreateView):
             return self.form_invalid(form)
 
         return super().form_valid(form)
-
+    
+class GetDoctorsByDepartmentView(View):
+    def get(self, request, *args, **kwargs):
+        department_id = request.GET.get('department_id')
+        doctors = Doctor.objects.filter(department_id=department_id).values('id', 'user__first_name', 'user__last_name')
+        doctor_list = [{'id': doc['id'], 'name': f"{doc['user__first_name']} {doc['user__last_name']}"} for doc in doctors]
+        return JsonResponse({'doctors': doctor_list})
 
 class AppointmentListView(LoginRequiredMixin, ListView):
     model = Appointment
@@ -236,33 +255,35 @@ from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponseForbidden
 from django.views import View
 from .models import Appointment
+from django.db import transaction
 
 class AppointmentStatusUpdateView(View):
     def post(self, request, pk):
-        # Ensure only doctors and admins can update
+        # Ensure only doctors and admins can update the appointment
         if request.user.role not in ['doctor', 'admin']:
             return HttpResponseForbidden("You do not have permission to update appointment status.")
 
-        # Get the appointment
+        # Get the appointment object
         appointment = get_object_or_404(Appointment, id=pk)
 
-        # Ensure only the assigned doctor can approve/cancel it
+        # Ensure only the assigned doctor can approve/cancel the appointment
         if request.user.role == 'doctor' and appointment.doctor.user != request.user:
             return HttpResponseForbidden("You can only modify your own appointments.")
 
-        # Update the status based on the submitted value
-        status = request.POST.get('status')  # Get 'approved' or 'canceled' from the form
+        # Get status from the form submission
+        status = request.POST.get('status')
+
+        # Debugging logs to track the status change
+        print(f"🔎 Received status from form: {status}")
+        print(f"🔹 Before update - Appointment {appointment.id}: {appointment.status}")
+
         if status in ['approved', 'canceled']:
-            appointment.status = status
-            appointment.save()
+            appointment.status = status  # Update the status
+            appointment.save()  # Save changes to the database
+            print(f"✅ After update - Appointment {appointment.id}: {appointment.status}")
 
-        # Redirect based on the role
-        if request.user.role == 'admin':
-            return redirect('admin_appointment_list')  # Change this to the actual admin appointment list URL
-        else:
-            return redirect('doctor_appointment_list')  # Redirect doctors to their own list
-#Dashboard
-
+        # Redirect back to the doctor's appointment list
+        return redirect('doctor_appointment_list')
 #===============Dashboard==============
 
 class DashboardView(LoginRequiredMixin, TemplateView):
@@ -302,6 +323,14 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
         return context
     
+#======index=====
+class IndexView(TemplateView):
+    template_name = 'index.html'
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     if request.user.is_authenticated:
+    #         return redirect('dashboard')  # Redirect logged-in users to the dashboard
+    #     return super().dispatch(request, *args, **kwargs)
 
 #==========Seprate Appointment List View ==================
 

@@ -64,6 +64,7 @@ class Appointment(models.Model):
 
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE, related_name='appointments')
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    department=models.ForeignKey(Department,on_delete=models.CASCADE)
     date = models.DateField()
     time = models.TimeField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
@@ -83,6 +84,7 @@ class Appointment(models.Model):
         return self.status == 'pending'
     
     def save(self, *args, **kwargs):
-        if self.pk and self.status == 'approved':
+        """Ensure new appointments default to pending but allow updates"""
+        if not self.pk:  # If creating a new appointment
             self.status = 'pending'
         super().save(*args, **kwargs)
