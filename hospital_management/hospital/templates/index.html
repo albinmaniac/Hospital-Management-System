@@ -1,47 +1,286 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
+<html>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hospital Management System</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body {
-            background-color: #f8f9fa;
-            text-align: center;
-            padding-top: 50px;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            margin-bottom: 20px;
-        }
-        .btn-group {
-            margin-top: 20px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Welcome to the Hospital Management System</h1>
-        <p>Manage appointments, patients, and doctors seamlessly.</p>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+		<script src="https://unpkg.com/unlazy@0.11.3/dist/unlazy.with-hashing.iife.js" defer init></script>
+		<script type="text/javascript">
+			window.tailwind.config = {
+				darkMode: ['class'],
+				theme: {
+					extend: {
+						colors: {
+							border: 'hsl(var(--border))',
+							input: 'hsl(var(--input))',
+							ring: 'hsl(var(--ring))',
+							background: 'hsl(var(--background))',
+							foreground: 'hsl(var(--foreground))',
+							primary: {
+								DEFAULT: 'hsl(var(--primary))',
+								foreground: 'hsl(var(--primary-foreground))'
+							},
+							secondary: {
+								DEFAULT: 'hsl(var(--secondary))',
+								foreground: 'hsl(var(--secondary-foreground))'
+							},
+							destructive: {
+								DEFAULT: 'hsl(var(--destructive))',
+								foreground: 'hsl(var(--destructive-foreground))'
+							},
+							muted: {
+								DEFAULT: 'hsl(var(--muted))',
+								foreground: 'hsl(var(--muted-foreground))'
+							},
+							accent: {
+								DEFAULT: 'hsl(var(--accent))',
+								foreground: 'hsl(var(--accent-foreground))'
+							},
+							popover: {
+								DEFAULT: 'hsl(var(--popover))',
+								foreground: 'hsl(var(--popover-foreground))'
+							},
+							card: {
+								DEFAULT: 'hsl(var(--card))',
+								foreground: 'hsl(var(--card-foreground))'
+							},
+						},
+					}
+				}
+			}
+		</script>
+		<style type="text/tailwindcss">
+			@layer base {
+				:root {
+					--background: 0 0% 100%;
+--foreground: 240 10% 3.9%;
+--card: 0 0% 100%;
+--card-foreground: 240 10% 3.9%;
+--popover: 0 0% 100%;
+--popover-foreground: 240 10% 3.9%;
+--primary: 240 5.9% 10%;
+--primary-foreground: 0 0% 98%;
+--secondary: 240 4.8% 95.9%;
+--secondary-foreground: 240 5.9% 10%;
+--muted: 240 4.8% 95.9%;
+--muted-foreground: 240 3.8% 46.1%;
+--accent: 240 4.8% 95.9%;
+--accent-foreground: 240 5.9% 10%;
+--destructive: 0 84.2% 60.2%;
+--destructive-foreground: 0 0% 98%;
+--border: 240 5.9% 90%;
+--input: 240 5.9% 90%;
+--ring: 240 5.9% 10%;
+--radius: 0.5rem;
+				}
+				.dark {
+					--background: 240 10% 3.9%;
+--foreground: 0 0% 98%;
+--card: 240 10% 3.9%;
+--card-foreground: 0 0% 98%;
+--popover: 240 10% 3.9%;
+--popover-foreground: 0 0% 98%;
+--primary: 0 0% 98%;
+--primary-foreground: 240 5.9% 10%;
+--secondary: 240 3.7% 15.9%;
+--secondary-foreground: 0 0% 98%;
+--muted: 240 3.7% 15.9%;
+--muted-foreground: 240 5% 64.9%;
+--accent: 240 3.7% 15.9%;
+--accent-foreground: 0 0% 98%;
+--destructive: 0 62.8% 30.6%;
+--destructive-foreground: 0 0% 98%;
+--border: 240 3.7% 15.9%;
+--input: 240 3.7% 15.9%;
+--ring: 240 4.9% 83.9%;
+				}
+			}
+      @layer base {
+				:root {
+					--background: 0 0% 100%;
+--foreground: 240 10% 3.9%;
+--card: 0 0% 100%;
+--card-foreground: 240 10% 3.9%;
+--popover: 0 0% 100%;
+--popover-foreground: 240 10% 3.9%;
+--primary: 240 5.9% 10%;
+--primary-foreground: 0 0% 98%;
+--secondary: 240 4.8% 95.9%;
+--secondary-foreground: 240 5.9% 10%;
+--muted: 240 4.8% 95.9%;
+--muted-foreground: 240 3.8% 46.1%;
+--accent: 240 4.8% 95.9%;
+--accent-foreground: 240 5.9% 10%;
+--destructive: 0 84.2% 60.2%;
+--destructive-foreground: 0 0% 98%;
+--border: 240 5.9% 90%;
+--input: 240 5.9% 90%;
+--ring: 240 5.9% 10%;
+--radius: 0.5rem;
+				}
+				.dark {
+					--background: 240 10% 3.9%;
+--foreground: 0 0% 98%;
+--card: 240 10% 3.9%;
+--card-foreground: 0 0% 98%;
+--popover: 240 10% 3.9%;
+--popover-foreground: 0 0% 98%;
+--primary: 0 0% 98%;
+--primary-foreground: 240 5.9% 10%;
+--secondary: 240 3.7% 15.9%;
+--secondary-foreground: 0 0% 98%;
+--muted: 240 3.7% 15.9%;
+--muted-foreground: 240 5% 64.9%;
+--accent: 240 3.7% 15.9%;
+--accent-foreground: 0 0% 98%;
+--destructive: 0 62.8% 30.6%;
+--destructive-foreground: 0 0% 98%;
+--border: 240 3.7% 15.9%;
+--input: 240 3.7% 15.9%;
+--ring: 240 4.9% 83.9%;
+				}
+			}
 
-        {% if user.is_authenticated %}
-            <a href="{% url 'dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
-            <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
-        {% else %}
-            <div class="btn-group">
-                <a href="{% url 'login' %}" class="btn btn-success">Login</a>
-                <a href="{% url 'doctor_register' %}" class="btn btn-info">Register as Doctor</a>
-                <a href="{% url 'patient_register' %}" class="btn btn-warning">Register as Patient</a>
-            </div>
-        {% endif %}
+		</style>
+  </head>
+  <body>
+    <div class="bg-background  text-foreground min-h-screen flex flex-col">
+  <header class="flex justify-between items-center p-4 bg-accent shadow-md" style="background-color:  rgb(176, 27, 94);">
+    <div class="text-3xl font-bold text-accent-foreground" >Care</div>
+    <nav class="space-x-6" >
+      <a href="{% url 'dashboard' %}" class="text-muted hover:text-muted-foreground transition">Home</a>
+      <a href="#" class="text-muted hover:text-muted-foreground transition">About Us</a>
+      <a href="#" class="text-muted hover:text-muted-foreground transition">Services</a>
+      <div class="relative inline-block">
+        <button class="text-muted hover:text-muted-foreground transition">More Info</button>
+        <div class="absolute hidden bg-card border border-border mt-2">
+        </div>
+      </div>
+      <a href="#" class="bg-primary text-primary-foreground px-6 py-2 rounded-lg shadow-lg hover:bg-primary/80 transition">Sign Up</a>
+    </nav>
+  </header>
+  <main class="flex-1 flex items-center justify-center bg-cover bg-center" style="background-image: url('https://placehold.co/1920x1080'); background-color: rgb(169, 66, 66);">
+    <div class="text-center p-10 bg-card bg-opacity-90 rounded-sm shadow-2xl" style="background-color: rgb(48, 211, 132);">
+      <h1 class="text-5xl font-extrabold mb-4 text-primary" style="color:rgb(91, 41, 41);" >Your Health, Our Priority: Welcome to Care Clinic</h1>
+      <p class="mb-6 text-lg text-muted-foreground" style="color: rgb(21, 21, 18);">At our Clinic, we offer a comprehensive range of services designed to meet your healthcare needs. Our dedicated team is here to provide exceptional care and support every step of the way.</p>
+      <div class="space-x-4">
+        <a href="#" class="bg-secondary text-secondary-foreground px-6 py-2 rounded-lg shadow-lg hover:bg-secondary/80 transition">Book</a>
+        <a href="#" class="bg-accent text-accent-foreground px-6 py-2 rounded-lg shadow-lg hover:bg-accent/80 transition">Learn</a>
+      </div>
     </div>
+  </main>
+<!-- </div>
+<body class="bg-background text-foreground"> -->
+  <div class="container-fluid mx-auto p-6" style="background-color: rgb(76, 56, 158);">
+      <!-- <h2 class="text-center text-4xl font-bold mb-4 text-primary" style="color: crimson;font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Care</h2> -->
+      <h1 class="text-center text-5xl font-extrabold mb-6 text-primary" style="color: #e67dbe;">Innovative Features for Exceptional Patient Care</h1>
+      <p class="text-center text-lg mb-8 text-muted-foreground" style="color: black;">
+          Our hospital is equipped with cutting-edge medical technology to ensure the highest standard of care. With a team of highly experienced professionals, we are dedicated to your health and well-being.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-card p-6 rounded-lg shadow-xl transform transition-transform hover:scale-105 duration-300 text-center">
+              <img aria-hidden="true" alt="advanced-medical-technology" src="https://placehold.co/100?text=📦" class="w-16 h-16 mx-auto mb-4" crossorigin="anonymous">
+              <h3 class="font-semibold text-xl text-primary">Advanced Medical Technology for Better Outcomes</h3>
+              <p class="text-muted-foreground">We utilize the latest advancements in medical technology to provide better outcomes for our patients.</p>
+          </div>
+          <div class="bg-card p-6 rounded-lg shadow-xl transform transition-transform hover:scale-105 duration-300 text-center">
+              <img aria-hidden="true" alt="experienced-staff" src="https://placehold.co/100?text=👨‍⚕️" class="w-16 h-16 mx-auto mb-4" crossorigin="anonymous">
+              <h3 class="font-semibold text-xl text-primary">Experienced Staff Committed to Your Health</h3>
+              <p class="text-muted-foreground">Our team consists of skilled and experienced healthcare professionals who are dedicated to providing the best care for you.</p>
+          </div>
+          <div class="bg-card p-6 rounded-lg shadow-xl transform transition-transform hover:scale-105 duration-300 text-center">
+              <img aria-hidden="true" alt="emergency-services" src="https://placehold.co/100?text=🚑" class="w-16 h-16 mx-auto mb-4" crossorigin="anonymous">
+              <h3 class="font-semibold text-xl text-primary">24/7 Emergency Services for Your Peace of Mind</h3>
+              <p class="text-muted-foreground">We offer round-the-clock emergency services to ensure you receive immediate care when you need it the most.</p>
+          </div>
+      </div>
+  </div>
+</body>
+
+<div class="text-primary-foreground py-12" style="background-color: #e67dbe;">
+
+  <h1 class="text-3xl font-bold text-center mb-8">Comprehensive Medical Services Tailored to Your Health Needs</h1>
+  <div class="flex flex-col md:flex-row justify-center space-y-8 md:space-y-0 md:space-x-8">
+    <div class="bg-card p-6 rounded-lg shadow-lg text-center">
+      <img aria-hidden="true" alt="medical-box" src="https://openui.fly.dev/openui/24x24.svg?text=📦" class="mx-auto mb-4" />
+      <h2 class="text-xl font-semibold">Expert Care Across Various Specialties for Optimal Patient Outcomes</h2>
+      <p class="text-muted-foreground">Our hospital offers a wide range of medical services to ensure your health.</p>
+      <a href="{% url 'dashboard' %}" class="mt-4 inline-block bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded">Explore</a>
+    </div>
+    <div class="bg-card p-6 rounded-lg shadow-lg text-center">
+      <img aria-hidden="true" alt="diagnostic-box" src="https://openui.fly.dev/openui/24x24.svg?text=🔍" class="mx-auto mb-4" />
+      <h2 class="text-xl font-semibold">Advanced Diagnostic Services for Accurate Health Assessments</h2>
+      <p class="text-muted-foreground">Utilizing state-of-the-art technology, we provide precise diagnostic evaluations.</p>
+      <a href="{% url 'doctor_list' %}" class="mt-4 inline-block bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded">Doctors</a>
+    </div>
+    <div class="bg-card p-6 rounded-lg shadow-lg text-center">
+      <img aria-hidden="true" alt="emergency-box" src="https://openui.fly.dev/openui/24x24.svg?text=🚑" class="mx-auto mb-4" />
+      <h2 class="text-xl font-semibold">Compassionate Emergency Care Available 24/7 for Urgent Health Issues</h2>
+      <p class="text-muted-foreground">Our dedicated team is ready to assist you in emergencies at any time.</p>
+      <a href="#" class="mt-4 inline-block bg-secondary text-secondary-foreground hover:bg-secondary/80 px-4 py-2 rounded">Contact</a>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- First Section -->
+<div class="bg-background text-foreground p-8">
+  <div class="max-w-4xl mx-auto text-center">
+    <h1 class="text-5xl font-extrabold mb-4 text-gradient">Your Health, Our Priority</h1>
+    <p class="text-lg mb-6 text-muted-foreground">Schedule your appointment today and take the first step towards better health and wellness.</p>
+    <div class="flex justify-center space-x-4">
+      <button class="bg-primary text-primary-foreground px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition"><a href="{% url 'dashboard' %}"></a>Book</button>
+      <button class="bg-secondary text-secondary-foreground px-6 py-3 rounded-lg shadow-lg hover:shadow-xl transition">Contact</button>
+    </div>
+  </div>
+
+  <footer class="bg-card text-card-foreground mt-12 p-8 rounded-lg shadow-lg">
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-6">
+        <h2 class="text-2xl font-bold">Logo</h2>
+        <p class="text-muted-foreground">Subscribe to our newsletter for the latest updates on features and releases.</p>
+        <div class="flex justify-center mt-4">
+          <input type="email" placeholder="Your email here" class="border border-border rounded-lg p-2 mr-2 focus:outline-none focus:ring-2 focus:ring-primary" />
+          <button class="bg-accent text-accent-foreground px-4 py-2 rounded-lg transition-transform transform hover:scale-105">Subscribe</button>
+        </div>
+      </div>
+    </div>
+  </footer>
+</div>
+<hr>
+<!-- Second Section -->
+<div class="container-fluid bg-background text-foreground p-8" style="background-color:rgb(176, 27, 94);">
+  <div class="grid grid-cols-3 gap-8 text-center">
+    <div>
+      <h3 class="font-bold text-lg">Quick Links</h3>
+      <ul class="space-y-2">
+        <li class="hover:text-primary transition">About Us</li>
+        <li class="hover:text-primary transition">Contact Us</li>
+        <li class="hover:text-primary transition">Support</li>
+        <li class="hover:text-primary transition">Careers</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-bold text-lg">Resources</h3>
+      <ul class="space-y-2">
+        <li class="hover:text-primary transition">FAQs</li>
+        <li class="hover:text-primary transition">Documentation</li>
+        <li class="hover:text-primary transition">Case Studies</li>
+        <li class="hover:text-primary transition">Webinars</li>
+        <li class="hover:text-primary transition">Events</li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="font-bold text-lg">Connect With Us</h3>
+      <ul class="space-y-2">
+        <li class="hover:text-primary transition">Facebook</li>
+        <li class="hover:text-primary transition">Instagram</li>
+        <li class="hover:text-primary transition">X</li>
+        <li class="hover:text-primary transition">LinkedIn</li>
+        <li class="hover:text-primary transition">YouTube</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

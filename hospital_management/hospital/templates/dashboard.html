@@ -12,14 +12,14 @@
 
   <style>
     body {
-      background-color: #f8f9fa;
+      background-color: #9bc0e6;
       font-family: Arial, sans-serif;
     }
 
     .sidebar {
       height: 100vh;
       width: 250px;
-      background: #343a40;
+      background: #4f2c51;
       color: white;
       position: fixed;
       top: 0;
@@ -28,14 +28,14 @@
     }
 
     .sidebar a {
-      color: white;
+      color:whitesmoke;
       display: block;
       padding: 15px 20px;
       text-decoration: none;
     }
 
     .sidebar a:hover {
-      background: #495057;
+      background: #7f837c;
     }
 
     .sidebar .sidebar-header {
@@ -69,7 +69,7 @@
     .status-canceled { background-color: red; color: white; }
 
     footer {
-      background-color: #343a40;
+      background-color: #4f2c51;
       color: white;
       text-align: center;
       padding: 15px 0;
@@ -92,7 +92,7 @@
 
   <!-- Sidebar -->
   <div class="sidebar">
-    <div class="sidebar-header">Dashboard</div>
+    <div class="sidebar-header" style="font-size: 40px; font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; color: lightseagreen;">Dashboard</div>
     <a href="{% url 'index' %}"><i class="fas fa-home"></i> Home</a>
     <a href="{% url 'doctor_list' %}"><i class="fas fa-user-md"></i> Doctors</a>
     <a href="{% url 'patient_list' %}"><i class="fas fa-users"></i> Patients</a>
@@ -109,7 +109,7 @@
   <!-- Content -->
   <div class="content">
     <div class="container">
-      <h1 style="color: darkslateblue;">Welcome, {{ user.first_name }}!</h1>
+      <h1 style="color: rgb(150, 15, 28); font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Welcome, {{ user.first_name }}!</h1>
       <p class="text-muted">Here’s what’s happening today.</p>
 
       <!-- Stats Cards -->
@@ -149,7 +149,7 @@
 
       <!-- Appointments Section -->
       <h1>Appointments</h1>
-      <table class="table table-bordered" style="color: rgb(31, 22, 112);">
+      <table class="table table-bordered" style="color: rgb(7, 47, 18);">
         <thead>
           <tr>
             {% if user.role == 'doctor' or user.role == 'admin' %}

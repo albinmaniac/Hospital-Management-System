@@ -1,10 +1,8 @@
-
-
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Patient List</title>
-    <!-- Tailwind CSS -->
+
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
@@ -35,8 +33,43 @@
             </div>
         </div>
         {% endfor %}
-    </div>
-
+    </div> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Patient List</title>
+        <!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+        <center>
+            <h1 class="text-3xl font-bold my-6">Patient List</h1>
+        </center>
+    
+        <!-- Grid Container -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 p-6">
+            {% for patient in patients %}
+            <div class="max-w-sm mx-auto bg-white rounded-lg shadow-lg hover:shadow-blue-400">
+                <div class="relative">
+                    <img class="w-full h-48 object-cover" 
+                         src="https://images.unsplash.com/photo-1557862921-37829c790f19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw4fHx1c2VyfGVufDB8MHx8fDE2OTQwOTU5Nzl8MA&ixlib=rb-4.0.3&q=80&w=1080" 
+                         alt="Profile Image">
+                </div>
+                <div class="px-6 py-4">
+                    <div class="text-xl font-semibold text-gray-800">Name: {{ patient.user.username }}</div><br>
+                    <p class="text-gray-600">PH Number: {{ patient.contact_number }} </p>
+                    <p class="text-gray-600"></p>
+                </div>
+                <div class="px-7 py-4">
+                    <a href="#" class="text-blue-500 hover:underline">{{ patient.user.email }}</a>
+                </div>
+                <div class="px-6 py-4 flex justify-between">
+                    <a class="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600" href="{% url 'patient_detail' patient.id %}">View Details</a>
+                    <a class="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600" href="{% url 'dashboard' %}">Go Back</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
     <!-- Show a fallback message if no patients exist -->
     {% if not patients %}
     <p class="text-center text-gray-600">No patients found.</p>

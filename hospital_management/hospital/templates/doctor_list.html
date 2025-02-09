@@ -5,31 +5,31 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-100">
     <center>
-        <h1 style="font-size: 30px;"><b>Doctors List</b></h1>
+        <h1 class="text-3xl font-bold my-6">Doctors List</h1>
     </center>
-    <br><br>
-    <div class="flex flex-wrap justify-center gap-6">
+
+    <!-- Grid Container -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 p-6">
         {% for doctor in doctors %}
-        <div class="max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg hover:shadow-blue-400" style="height: 400px; width: 300px;">
+        <div class="max-w-sm mx-auto bg-white rounded-lg shadow-lg hover:shadow-blue-400">
             <div class="relative">
-                <img class="w-full h-48 object-cover" src="https://images.unsplash.com/photo-1557862921-37829c790f19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw4fHx1c2VyfGVufDB8MHx8fDE2OTQwOTU5Nzl8MA&ixlib=rb-4.0.3&q=80&w=1080" alt="Profile Image">
+                <img class="w-full h-48 object-cover" 
+                     src="https://images.unsplash.com/photo-1557862921-37829c790f19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw4fHx1c2VyfGVufDB8MHx8fDE2OTQwOTU5Nzl8MA&ixlib=rb-4.0.3&q=80&w=1080" 
+                     alt="Profile Image">
             </div>
             <div class="px-6 py-4">
-                <div class="text-xl font-semibold text-gray-800">{{ doctor.full_name }}</div>
-                <p class="text-gray-600">{{ doctor.specialization }} | {{ doctor.department.name }}</p>
+                <div class="text-xl font-semibold text-gray-800">{{ doctor.full_name }}</div><br>
+                <p class="text-gray-600">Specialization : {{ doctor.specialization }} </p>
+                <p class="text-gray-600">Department   :  {{ doctor.department.name }}</p>
             </div>
             <div class="px-7 py-4">
                 <a href="#" class="text-blue-500 hover:underline">{{ doctor.user.email }}</a>
             </div>
-            <div class="px-6 py-4">
-                <span class="inline-block px-2 py-1 font-semibold text-green-900 bg-purple-200 rounded-full">
-                    <a class="text-green-500 hover:underline" href="{% url 'doctor_detail' doctor.id %}">View Details</a>
-                </span>
-                <span class="inline-block px-2 py-1 font-semibold text-red-900 bg-purple-200 rounded-full">
-                    <a class="text-red-500 hover:underline" href="{% url 'dashboard' %}">Go Back</a>
-                </span>
+            <div class="px-6 py-4 flex justify-between">
+                <a class="px-3 py-1 bg-green-500 text-white rounded-lg hover:bg-green-600" href="{% url 'doctor_detail' doctor.id %}">View Details</a>
+                <a class="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600" href="{% url 'dashboard' %}">Go Back</a>
             </div>
         </div>
         {% endfor %}

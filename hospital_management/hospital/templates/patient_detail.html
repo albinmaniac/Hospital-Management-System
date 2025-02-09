@@ -1,4 +1,4 @@
-<h1>Patient Details</h1>
+<!-- <h1>Patient Details</h1>
 <p>Username: {{ patient.user.username }}</p>
 <p>Email: {{ patient.user.email }}</p>
 <p>Contact Number: {{ patient.contact_number }}</p>
@@ -7,4 +7,37 @@
 <p>Address: {{ patient.address }}</p>
 <a href="{% url 'patient_update' patient.pk %}">Edit</a>
 <a href="{% url 'patient_delete' patient.pk %}">Delete</a>
+ -->
 
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Patient Details</title>
+        <!-- tailwind Css -->
+        <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<h1 style=" font-size: 30px;"><center><b>Patient Details</b></center></h1>
+<br><br>
+    <div class="max-w-sm mx-auto overflow-hidden bg-white rounded-lg shadow-lg hover:shadow-blue-400 " style="height: 400px; width: 300px;" >
+        <div class="relative">
+          <img class="w-full h-48 object-cover" src="https://images.unsplash.com/photo-1557862921-37829c790f19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NzEyNjZ8MHwxfHNlYXJjaHw4fHx1c2VyfGVufDB8MHx8fDE2OTQwOTU5Nzl8MA&ixlib=rb-4.0.3&q=80&w=1080" alt="Profile Image">
+        </div>
+        <div class="px-6 py-4">
+          <div class="text-xl font-semibold text-gray-800">{{ patient.user.username }}</div><br>
+          <p class="text-gray-600">  Contact Number: {{ patient.contact_number }} </p>
+          <p class="text-gray-600">Address: {{ patient.address }}</p>
+          <p class="text-gray-600">Date of Birth: {{ patient.date_of_birth }}</p>
+        </div>
+        <div class="px-6 py-4">
+          <span class="inline-block px-2 py-1 font-semibold text-teal-900 bg-teal-200 rounded-full"><a href="{% url 'patient_update' patient.pk %}">update</a></span>
+          <span class="inline-block px-2 py-1 font-semibold text-indigo-900 bg-indigo-200 rounded-full"><a href="{% url 'patient_delete' patient.pk %}">Delete</a></span>
+          <span class="inline-block px-2 py-1 font-semibold text-purple-900 bg-purple-200 rounded-full"> <a href="{% url 'patient_list' %}">Go Back</a></span>
+        </div>
+        <div class="px-7 py-4">
+          <a href="#" class="text-blue-500 hover:underline">{{ patient.user.email }}</a>
+        </div>
+      </div>
+
+</body>
+</html>
